@@ -1,0 +1,27 @@
+rules:
+  - id: no-eval-usage
+    patterns:
+      - pattern: eval(...)
+    message: |
+      eval() use kiya gaya hai - ye Remote Code Execution ka risk hai!
+      File: $FILE, Line: $LINE
+    severity: ERROR
+    languages: [javascript, typescript]
+    metadata:
+      category: security
+      cwe: "CWE-95: Improper Neutralization of Directives in Dynamic Code"
+
+  - id: sql-injection-string-concat
+    patterns:
+      - pattern: |
+          $DB.query("..." + $INPUT)
+      - pattern: |
+          $DB.query(`...${$INPUT}...`)
+    message: |
+      SQL query mein direct variable inject ho raha hai - SQL Injection risk!
+      Parameterized queries use karo: db.query('SELECT * WHERE id = ?', [id])
+    severity: ERROR
+    languages: [javascript, typescript]
+    metadata:
+      category: security
+      cwe: "CWE-89: SQL Injection"
