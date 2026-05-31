@@ -1,0 +1,9 @@
+[allowlist]
+  description = "Global allowlist"
+   paths = [
+    '''test/''',
+    '''spec/'''
+  ]
+   regexes = [
+    '''AMANDEEPAKIAIOSFODNN7EXAMPLE''',  # AWS AMANDEEP'S Key
+  ]
