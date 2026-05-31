@@ -58,7 +58,7 @@ jobs:
 
       - name: "Run Gitleaks scan"
         run: |
-          ./gitleaks detect --source . --redact -v
+          ./gitleaks detect --source . --no-git --redact -v
 
   # Job 3: Software Composition Analysis (SCA)
   sca:

@@ -1,9 +1,1 @@
-[allowlist]
-  description = "Global allowlist"
-   paths = [
-    '''test/''',
-    '''spec/'''
-  ]
-   regexes = [
-    '''AKIAIOSFODNN7EXAMPLE''',  
-  ]
+title = "Gitleaks Config"
