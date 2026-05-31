@@ -5,5 +5,5 @@
     '''spec/'''
   ]
    regexes = [
-    '''AMANDEEPAKIAIOSFODNN7EXAMPLE''',  # AWS AMANDEEP'S Key
+    '''AKIAIOSFODNN7EXAMPLE''',  
   ]
