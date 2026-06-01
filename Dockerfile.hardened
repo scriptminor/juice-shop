@@ -1,16 +1,19 @@
-FROM node:18-alpine AS builder
+FROM node:24 AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install --only=production
-
 COPY . .
 
-FROM node:18-alpine
+# Keep server compilation available when dev dependencies are omitted.
+RUN npm install -g typescript@~5.3.3 \
+ && npm install --omit=dev --unsafe-perm \
+ && npm dedupe --omit=dev \
+ && rm -rf frontend/.angular frontend/src/assets \
+ && mkdir -p logs
 
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+FROM node:24-slim
+
+RUN groupadd -r appgroup && useradd -r -g appgroup appuser
 
 WORKDIR /app
 
@@ -20,7 +23,7 @@ USER appuser
 
 EXPOSE 3000
 
-HEALTHCHECK --interval=30s --timeout=3s \
-  CMD wget -qO- http://localhost:3000 || exit 1
+HEALTHCHECK --interval=30s --timeout=5s \
+  CMD node -e "require('http').get('http://127.0.0.1:3000', (r) => process.exit(r.statusCode >= 200 && r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"
 
-CMD ["node", "bin/www"]
+CMD ["node", "build/app.js"]
